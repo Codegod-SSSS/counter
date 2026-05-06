@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Validation Helpers ---
+
+    function isValidUserSettings(data) {
+      return data.keys().hasAll(['budgetAmount', 'budgetType', 'currency', 'onboarded', 'theme', 'welcomed']) &&
+             data.budgetAmount is number &&
+             data.budgetType in ['daily', 'weekly', 'monthly', 'yearly'] &&
+             data.currency is string && data.currency.size() <= 10 &&
+             data.onboarded is bool &&
+             data.theme in ['light', 'dark', 'system'] &&
+             data.welcomed is bool &&
+             (!('userName' in data) || (data.userName is string && data.userName.size() <= 100)) &&
+             (!('email' in data) || (data.email is string && data.email.size() <= 100));
+    }
+
+    function isValidCategory(data) {
+      return data.keys().hasAll(['id', 'name', 'color', 'icon', 'monthlyLimit']) &&
+             isValidId(data.id) &&
+             data.name is string && data.name.size() <= 50 &&
+             data.color is string && data.color.size() <= 20 &&
+             data.icon is string && data.icon.size() <= 50 &&
+             data.monthlyLimit is number;
+    }
+
+    function isValidExpense(data) {
+      return data.keys().hasAll(['id', 'amount', 'categoryId', 'date', 'paymentMethod']) &&
+             isValidId(data.id) &&
+             data.amount is number &&
+             isValidId(data.categoryId) &&
+             data.date is string && data.date.size() <= 30 &&
+             data.paymentMethod in ['Cash', 'Mobile Money', 'Bank'] &&
+             (!('notes' in data) || (data.notes is string && data.notes.size() <= 500));
+    }
+
+    function isValidGoal(data) {
+      return data.keys().hasAll(['id', 'name', 'targetAmount', 'currentAmount']) &&
+             isValidId(data.id) &&
+             data.name is string && data.name.size() <= 100 &&
+             data.targetAmount is number &&
+             data.currentAmount is number &&
+             (!('deadline' in data) || (data.deadline is string && data.deadline.size() <= 30));
+    }
+
+    // --- Collection Rules ---
+
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUserSettings(incoming());
+      allow update: if isOwner(userId) && isValidUserSettings(incoming());
+
+      match /categories/{categoryId} {
+        allow list: if isOwner(userId);
+        allow get: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidCategory(incoming());
+        allow delete: if isOwner(userId);
+      }
+
+      match /expenses/{expenseId} {
+        allow list: if isOwner(userId);
+        allow get: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidExpense(incoming());
+        allow delete: if isOwner(userId);
+      }
+
+      match /goals/{goalId} {
+        allow list: if isOwner(userId);
+        allow get: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidGoal(incoming());
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

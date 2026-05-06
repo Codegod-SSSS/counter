@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "Category": {
+      "title": "Category",
+      "description": "User defined spending categories",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "color": { "type": "string" },
+        "icon": { "type": "string" },
+        "monthlyLimit": { "type": "number" }
+      },
+      "required": ["id", "name", "color", "icon", "monthlyLimit"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "A spending record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "amount": { "type": "number" },
+        "categoryId": { "type": "string" },
+        "date": { "type": "string" },
+        "notes": { "type": "string" },
+        "paymentMethod": { "type": "string", "enum": ["Cash", "Mobile Money", "Bank"] }
+      },
+      "required": ["id", "amount", "categoryId", "date", "paymentMethod"]
+    },
+    "SavingsGoal": {
+      "title": "Savings Goal",
+      "description": "A user savings target",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "targetAmount": { "type": "number" },
+        "currentAmount": { "type": "number" },
+        "deadline": { "type": "string" }
+      },
+      "required": ["id", "name", "targetAmount", "currentAmount"]
+    },
+    "UserSettings": {
+      "title": "User Settings",
+      "description": "User profile and preferences",
+      "type": "object",
+      "properties": {
+        "budgetAmount": { "type": "number" },
+        "budgetType": { "type": "string", "enum": ["daily", "weekly", "monthly", "yearly"] },
+        "currency": { "type": "string" },
+        "onboarded": { "type": "boolean" },
+        "theme": { "type": "string", "enum": ["light", "dark", "system"] },
+        "welcomed": { "type": "boolean" },
+        "userName": { "type": "string" },
+        "email": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserSettings",
+      "description": "User profile document"
+    },
+    "/users/{userId}/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "User categories subcollection"
+    },
+    "/users/{userId}/expenses/{expenseId}": {
+      "schema": "Expense",
+      "description": "User expenses subcollection"
+    },
+    "/users/{userId}/goals/{goalId}": {
+      "schema": "SavingsGoal",
+      "description": "User savings goals subcollection"
+    }
+  }
+}
