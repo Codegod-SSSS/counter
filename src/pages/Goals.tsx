@@ -40,52 +40,52 @@ export const Goals: React.FC = () => {
     <div className="space-y-8 pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-display font-bold text-slate-900">Savings Goals</h1>
-          <p className="text-slate-500">Track your progress towards big purchases.</p>
+          <h1 className="text-2xl font-display font-bold text-text-primary">Savings Goals</h1>
+          <p className="text-text-primary/50">Track your progress towards big purchases.</p>
         </div>
         <button 
           onClick={() => setIsAddOpen(true)}
-          className="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all shadow-lg"
+          className="bg-accent text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-emerald-500/20"
         >
           <Plus size={18} /> Add Goal
         </button>
       </div>
 
       {isAddOpen && (
-        <div className="bg-white p-8 rounded-3xl border-2 border-indigo-100 shadow-xl shadow-indigo-50 animate-in fade-in slide-in-from-top-4">
+        <div className="bg-card p-8 rounded-3xl border border-border-subtle shadow-xl animate-in fade-in slide-in-from-top-4">
           <form onSubmit={handleAddGoal} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-400">Goal Name</label>
+              <label className="text-xs font-bold text-text-primary/30 uppercase tracking-widest">Goal Name</label>
               <input 
                 type="text" 
                 value={newGoal.name}
                 onChange={e => setNewGoal({ ...newGoal, name: e.target.value })}
                 placeholder="e.g. New Laptop"
-                className="w-full px-4 py-2.5 bg-slate-50 rounded-xl outline-none focus:bg-white border focus:border-indigo-500 transition-all text-sm"
+                className="w-full px-4 py-2.5 bg-bg-main rounded-xl outline-none focus:bg-card border border-transparent focus:border-accent transition-all text-sm font-bold text-text-primary"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-400">Target Amount ({settings.currency})</label>
+              <label className="text-xs font-bold text-text-primary/30 uppercase tracking-widest">Target Amount ({settings.currency})</label>
               <input 
                 type="number" 
                 value={newGoal.targetAmount}
                 onChange={e => setNewGoal({ ...newGoal, targetAmount: e.target.value })}
                 placeholder="5000"
-                className="w-full px-4 py-2.5 bg-slate-50 rounded-xl outline-none focus:bg-white border focus:border-indigo-500 transition-all text-sm"
+                className="w-full px-4 py-2.5 bg-bg-main rounded-xl outline-none focus:bg-card border border-transparent focus:border-accent transition-all text-sm font-bold text-text-primary"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-400">Deadline (Optional)</label>
+              <label className="text-xs font-bold text-text-primary/30 uppercase tracking-widest">Deadline (Optional)</label>
               <input 
                 type="date" 
                 value={newGoal.deadline}
                 onChange={e => setNewGoal({ ...newGoal, deadline: e.target.value })}
-                className="w-full px-4 py-2.5 bg-slate-50 rounded-xl outline-none focus:bg-white border focus:border-indigo-500 transition-all text-sm"
+                className="w-full px-4 py-2.5 bg-bg-main rounded-xl outline-none focus:bg-card border border-transparent focus:border-accent transition-all text-sm font-bold text-text-primary"
               />
             </div>
             <div className="flex gap-2">
-              <button type="submit" className="flex-1 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-indigo-100 shadow-lg">Save</button>
-              <button type="button" onClick={() => setIsAddOpen(false)} className="px-4 py-2.5 bg-slate-100 text-slate-500 rounded-xl text-sm font-bold">Cancel</button>
+              <button type="submit" className="flex-1 py-2.5 bg-accent text-white rounded-xl text-sm font-bold shadow-emerald-500/20 shadow-lg">Save</button>
+              <button type="button" onClick={() => setIsAddOpen(false)} className="px-4 py-2.5 bg-bg-main text-text-primary/40 rounded-xl text-sm font-bold">Cancel</button>
             </div>
           </form>
         </div>
@@ -95,27 +95,27 @@ export const Goals: React.FC = () => {
         {goals.map(goal => {
           const progress = (goal.currentAmount / goal.targetAmount) * 100;
           return (
-            <div key={goal.id} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm group">
+            <div key={goal.id} className="bg-card p-8 rounded-3xl border border-border-subtle shadow-sm group hover:border-accent/40 transition-colors">
               <div className="flex justify-between items-start mb-6">
-                <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-bg-main rounded-2xl flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
                   <Target size={24} />
                 </div>
                 {goal.deadline && (
-                  <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full text-[10px] font-bold text-slate-400">
+                  <div className="flex items-center gap-1.5 px-3 py-1 bg-bg-main rounded-full text-[10px] font-bold text-text-primary/30">
                     <Calendar size={12} /> {format(new Date(goal.deadline), 'MMM yyyy')}
                   </div>
                 )}
               </div>
               
-              <h3 className="text-xl font-display font-bold text-slate-900 mb-1">{goal.name}</h3>
-              <p className="text-sm font-medium text-slate-400 mb-8">
+              <h3 className="text-xl font-display font-bold text-text-primary mb-1 tracking-tight">{goal.name}</h3>
+              <p className="text-sm font-medium text-text-primary/40 mb-8 font-display">
                 {formatCurrency(goal.currentAmount, settings.currency)} of {formatCurrency(goal.targetAmount, settings.currency)}
               </p>
 
               <div className="space-y-4">
-                <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-3 bg-bg-main rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-indigo-600 transition-all duration-1000"
+                    className="h-full bg-accent transition-all duration-1000 ease-out"
                     style={{ width: `${Math.min(100, progress)}%` }}
                   />
                 </div>
@@ -123,18 +123,18 @@ export const Goals: React.FC = () => {
                    <div className="flex gap-2">
                      <button 
                         onClick={() => updateProgress(goal.id, 100)}
-                        className="px-3 py-1.5 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg text-xs font-bold text-slate-500 transition-all"
+                        className="px-3 py-1.5 bg-bg-main hover:bg-accent/10 hover:text-accent rounded-lg text-xs font-bold text-text-primary/40 transition-all border border-transparent hover:border-accent/20"
                      >
                        +{settings.currency}100
                      </button>
                      <button 
                         onClick={() => updateProgress(goal.id, 500)}
-                        className="px-3 py-1.5 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg text-xs font-bold text-slate-500 transition-all"
+                        className="px-3 py-1.5 bg-bg-main hover:bg-accent/10 hover:text-accent rounded-lg text-xs font-bold text-text-primary/40 transition-all border border-transparent hover:border-accent/20"
                      >
                        +{settings.currency}500
                      </button>
                    </div>
-                   <span className="text-xs font-black text-slate-900">{progress.toFixed(0)}%</span>
+                   <span className="text-xs font-black text-text-primary">{progress.toFixed(0)}%</span>
                 </div>
               </div>
             </div>
@@ -142,10 +142,10 @@ export const Goals: React.FC = () => {
         })}
         
         {goals.length === 0 && !isAddOpen && (
-          <div className="md:col-span-2 py-20 bg-slate-50/50 rounded-[2.5rem] border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400">
-             <Trophy size={48} className="mb-4 opacity-10" />
+          <div className="md:col-span-2 py-20 bg-bg-main/50 rounded-[2.5rem] border-2 border-dashed border-border-subtle flex flex-col items-center justify-center text-text-primary/20">
+             <Trophy size={48} className="mb-4 opacity-50" />
              <p className="font-medium">You haven't set any savings goals yet.</p>
-             <button onClick={() => setIsAddOpen(true)} className="mt-4 text-indigo-600 font-bold hover:underline">Create your first goal</button>
+             <button onClick={() => setIsAddOpen(true)} className="mt-4 text-accent font-bold hover:underline">Create your first goal</button>
           </div>
         )}
       </div>

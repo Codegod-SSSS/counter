@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../../lib/utils';
 import { format } from 'date-fns';
 import { PaymentMethod } from '../../types';
+import { CategoryIcon } from '../../pages/Categories';
 
 interface AddExpenseModalProps {
   isOpen: boolean;
@@ -12,7 +13,7 @@ interface AddExpenseModalProps {
 }
 
 export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onClose }) => {
-  const { categories, addExpense } = useBudget();
+  const { categories, addExpense, settings } = useBudget();
   const [amount, setAmount] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
@@ -22,6 +23,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onClos
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || !categoryId) return;
+    if (notes.length > 500) return;
 
     addExpense({
       amount: Number(amount),
@@ -72,7 +74,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onClos
               <div className="text-center">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 block">Amount</label>
                 <div className="relative inline-block max-w-[200px]">
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 text-2xl font-black text-accent">₵</span>
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 text-2xl font-black text-accent">{settings.currency}</span>
                   <input
                     type="number"
                     autoFocus
@@ -109,7 +111,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onClos
                         )}
                         style={{ backgroundColor: cat.color }}
                       >
-                        <Wallet size={20} />
+                        <CategoryIcon name={cat.icon} size={20} />
                       </div>
                       <span className={cn(
                         "text-[10px] font-bold uppercase tracking-wide truncate w-full text-center",
@@ -165,15 +167,17 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onClos
 
                 {/* Notes */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <MessageSquare size={14} /> Notes (Optional)
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center justify-between gap-2">
+                    <span className="flex items-center gap-2"><MessageSquare size={14} /> Notes (Optional)</span>
+                    <span className={cn("text-[8px]", notes.length > 500 ? "text-rose-500" : "text-slate-300")}>
+                      {notes.length}/500
+                    </span>
                   </label>
-                  <input
-                    type="text"
+                  <textarea
                     value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
+                    onChange={(e) => setNotes(e.target.value.slice(0, 500))}
                     placeholder="e.g. Lunch with team"
-                    className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-50 rounded-xl text-sm font-semibold focus:outline-none focus:border-indigo-600 transition-all placeholder:text-slate-300"
+                    className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-50 rounded-xl text-sm font-semibold focus:outline-none focus:border-accent transition-all placeholder:text-slate-300 resize-none h-20"
                   />
                 </div>
               </div>

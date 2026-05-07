@@ -22,10 +22,10 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-bg-main dark:bg-dark-bg-main flex items-center justify-center p-4">
+      <div className="min-h-screen bg-bg-main flex items-center justify-center p-4">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-500 font-bold text-xs uppercase tracking-widest">Loading Secure Session...</p>
+          <p className="text-text-primary/50 font-bold text-xs uppercase tracking-widest">Loading Secure Session...</p>
         </div>
       </div>
     );

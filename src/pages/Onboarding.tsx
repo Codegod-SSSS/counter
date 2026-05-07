@@ -29,22 +29,22 @@ export const Onboarding: React.FC = () => {
 
   const steps = [
     {
-      title: "Welcome to CediSafe",
-      description: "Modern expense tracking tailored for Ghana. Choose your preferred budgeting style.",
+      title: "Welcome to Financial Safe",
+      description: "Modern expense tracking tailored for you. Choose your preferred budgeting style.",
       icon: <Wallet className="text-accent" size={40} />,
       content: (
         <div className="space-y-4 text-left">
           <div className="flex gap-3">
-            <div className="shrink-0 w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center text-accent">
+            <div className="shrink-0 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-accent">
               <TrendingUp size={14} />
             </div>
-            <p className="text-sm text-slate-600">Track spending across different timeframes.</p>
+            <p className="text-sm text-text-primary/60">Track spending across different timeframes.</p>
           </div>
           <div className="flex gap-3">
-            <div className="shrink-0 w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center text-accent">
+            <div className="shrink-0 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-accent">
               <ShieldCheck size={14} />
             </div>
-            <p className="text-sm text-slate-600">Your data stays local and secure.</p>
+            <p className="text-sm text-text-primary/60">Your data stays local and secure.</p>
           </div>
         </div>
       )
@@ -62,8 +62,8 @@ export const Onboarding: React.FC = () => {
               className={cn(
                 "p-4 rounded-2xl border-2 transition-all font-bold text-sm",
                 budgetType === type.value
-                  ? "border-accent bg-emerald-50 text-accent"
-                  : "border-slate-100 bg-white text-slate-500 hover:border-slate-200"
+                  ? "border-accent bg-accent/5 text-accent"
+                  : "border-border-subtle bg-card text-text-primary/40 hover:border-accent/40"
               )}
             >
               {type.label}
@@ -79,16 +79,16 @@ export const Onboarding: React.FC = () => {
       content: (
         <div className="space-y-4">
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">{settings.currency}</span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-primary/30 font-bold">{settings.currency}</span>
             <input
               type="number"
               placeholder="e.g. 5,000"
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
-              className="w-full pl-14 pr-4 py-4 bg-white border-2 border-slate-100 rounded-2xl text-2xl font-bold text-slate-900 focus:border-accent outline-none transition-all placeholder:text-slate-300"
+              className="w-full pl-14 pr-4 py-4 bg-bg-main border-2 border-border-subtle rounded-2xl text-2xl font-bold text-text-primary focus:border-accent outline-none transition-all placeholder:text-text-primary/20"
             />
           </div>
-          <p className="text-xs text-slate-400 font-medium">Tracking your {budgetType} target.</p>
+          <p className="text-xs text-text-primary/30 font-medium">Tracking your ${budgetType} target.</p>
         </div>
       )
     }
@@ -101,14 +101,14 @@ export const Onboarding: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="max-w-md w-full bg-white rounded-[2.5rem] p-10 shadow-2xl shadow-emerald-100/20 text-center"
+        className="max-w-md w-full bg-card rounded-[2.5rem] p-10 shadow-2xl shadow-accent/5 transition-colors duration-500 text-center border border-border-subtle"
       >
-        <div className="w-20 h-20 bg-emerald-50 rounded-3xl flex items-center justify-center mx-auto mb-8">
+        <div className="w-20 h-20 bg-accent/5 rounded-3xl flex items-center justify-center mx-auto mb-8">
           {currentStep.icon}
         </div>
         
-        <h2 className="text-3xl font-display font-bold text-slate-900 mb-4 tracking-tight">{currentStep.title}</h2>
-        <p className="text-slate-500 mb-10 leading-relaxed text-sm">{currentStep.description}</p>
+        <h2 className="text-3xl font-display font-bold text-text-primary mb-4 tracking-tight">{currentStep.title}</h2>
+        <p className="text-text-primary/50 mb-10 leading-relaxed text-sm">{currentStep.description}</p>
         
         <AnimatePresence mode="wait">
           <motion.div
@@ -126,7 +126,7 @@ export const Onboarding: React.FC = () => {
           {step > 1 && (
             <button
               onClick={() => setStep(step - 1)}
-              className="flex-1 py-4 text-slate-500 font-semibold hover:bg-slate-50 rounded-2xl transition-all text-sm"
+              className="flex-1 py-4 text-text-primary/40 font-semibold hover:bg-bg-main rounded-2xl transition-all text-sm"
             >
               Back
             </button>
@@ -134,7 +134,7 @@ export const Onboarding: React.FC = () => {
           <button
             disabled={step === 3 && !budget}
             onClick={() => step === steps.length ? handleComplete() : setStep(step + 1)}
-            className="flex-[2] bg-accent text-white py-4 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-200/50 disabled:opacity-50 disabled:shadow-none"
+            className="flex-[2] bg-accent text-white py-4 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-accent/20 disabled:opacity-50 disabled:shadow-none"
           >
             {step === steps.length ? 'Get Started' : 'Continue'}
             <ArrowRight size={20} />
@@ -147,7 +147,7 @@ export const Onboarding: React.FC = () => {
               key={i} 
               className={cn(
                 "h-1.5 rounded-full transition-all duration-300",
-                step === i + 1 ? "w-8 bg-accent" : "w-1.5 bg-slate-200"
+                step === i + 1 ? "w-8 bg-accent" : "w-1.5 bg-border-subtle"
               )} 
             />
           ))}

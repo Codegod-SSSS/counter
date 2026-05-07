@@ -35,7 +35,7 @@ export interface UserSettings {
   budgetType: BudgetType;
   currency: string;
   onboarded: boolean;
-  theme: 'light' | 'dark' | 'system';
+  theme: 'light' | 'dark' | 'gold' | 'system';
   language?: 'en' | 'fr' | 'ko';
   welcomed?: boolean;
   isAuthenticated?: boolean;

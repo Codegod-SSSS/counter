@@ -8,6 +8,7 @@ import {
   Sun,
   Globe,
   Coins,
+  Sparkles,
   Database,
   ShieldAlert,
   CalendarRange
@@ -38,21 +39,21 @@ export const Settings: React.FC = () => {
   return (
     <div className="space-y-8 pb-10">
       <div>
-        <h1 className="text-2xl font-display font-bold text-slate-900">Application Settings</h1>
-        <p className="text-slate-500">Customize your experience and manage your financial data.</p>
+        <h1 className="text-2xl font-display font-bold text-text-primary">Application Settings</h1>
+        <p className="text-text-primary/50">Customize your experience and manage your financial data.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Budget Strategy */}
-        <div className="bg-white rounded-[32px] border border-border-subtle shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-slate-50 bg-slate-50/50">
-            <h3 className="font-bold text-slate-900 flex items-center gap-2">
+        <div className="bg-card rounded-[32px] border border-border-subtle shadow-sm overflow-hidden">
+          <div className="p-6 border-b border-border-subtle bg-bg-main/50">
+            <h3 className="font-bold text-text-primary flex items-center gap-2">
               <CalendarRange size={18} className="text-accent" /> Budget Plan
             </h3>
           </div>
           <div className="p-6 space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Plan Frequency</label>
+              <label className="text-[10px] font-bold text-text-primary/40 uppercase tracking-widest">Plan Frequency</label>
               <div className="grid grid-cols-2 gap-2">
                 {budgetTypes.map((type) => (
                   <button
@@ -61,8 +62,8 @@ export const Settings: React.FC = () => {
                     className={cn(
                       "py-2.5 rounded-xl border-2 text-xs font-bold transition-all",
                       settings.budgetType === type.value
-                        ? "border-accent bg-emerald-50 text-accent"
-                        : "border-slate-50 bg-slate-50 text-slate-500 hover:border-slate-100"
+                        ? "border-accent bg-accent/5 text-accent"
+                        : "border-border-subtle bg-bg-main text-text-primary/50 hover:border-accent"
                     )}
                   >
                     {type.label}
@@ -72,35 +73,35 @@ export const Settings: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Budget Amount ({settings.currency})</label>
+              <label className="text-[10px] font-bold text-text-primary/40 uppercase tracking-widest">Budget Amount ({settings.currency})</label>
               <input 
                 type="number"
                 value={settings.budgetAmount}
                 onChange={(e) => handleBudgetAmountChange(e.target.value)}
-                className="w-full px-5 py-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl outline-none border border-transparent focus:border-accent transition-all font-bold text-slate-900 dark:text-white"
+                className="w-full px-5 py-3.5 bg-bg-main rounded-2xl outline-none border border-transparent focus:border-accent transition-all font-bold text-text-primary"
               />
-              <p className="text-[10px] text-slate-400 font-medium">This is your {settings.budgetType} spending limit in {settings.currency}.</p>
+              <p className="text-[10px] text-text-primary/40 font-medium">This is your {settings.budgetType} spending limit in {settings.currency}.</p>
             </div>
           </div>
         </div>
 
         {/* General Options */}
-        <div className="bg-white dark:bg-dark-card rounded-[32px] border border-border-subtle dark:border-dark-border shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-slate-50 dark:border-dark-border bg-slate-50/50 dark:bg-slate-800/20">
-            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <SettingsIcon size={18} className="text-indigo-600" /> Regional & App
+        <div className="bg-card rounded-[32px] border border-border-subtle shadow-sm overflow-hidden">
+          <div className="p-6 border-b border-border-subtle bg-bg-main/50">
+            <h3 className="font-bold text-text-primary flex items-center gap-2">
+              <SettingsIcon size={18} className="text-accent" /> Regional & App
             </h3>
           </div>
           <div className="p-6 space-y-6">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold text-slate-900 dark:text-white">Language</p>
-                  <p className="text-xs text-slate-400">Application display language</p>
+                  <p className="text-sm font-bold text-text-primary">Language</p>
+                  <p className="text-xs text-text-primary/40">Application display language</p>
                 </div>
-                <Globe size={18} className="text-slate-400" />
+                <Globe size={18} className="text-text-primary/30" />
               </div>
-              <div className="flex bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl">
+              <div className="flex bg-bg-main p-1 rounded-xl">
                 {(['en', 'fr', 'ko'] as const).map((l) => (
                   <button 
                     key={l}
@@ -108,8 +109,8 @@ export const Settings: React.FC = () => {
                     className={cn(
                       "flex-1 py-2 text-xs font-bold rounded-lg transition-all uppercase tracking-widest",
                       settings.language === l 
-                        ? "bg-white dark:bg-slate-700 text-indigo-600 shadow-sm" 
-                        : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                        ? "bg-card text-accent shadow-sm" 
+                        : "text-text-primary/40 hover:text-text-primary"
                     )}
                   >
                     {l}
@@ -121,15 +122,15 @@ export const Settings: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold text-slate-900 dark:text-white">Display Currency</p>
-                  <p className="text-xs text-slate-400">Default tracking currency</p>
+                  <p className="text-sm font-bold text-text-primary">Display Currency</p>
+                  <p className="text-xs text-text-primary/40">Default tracking currency</p>
                 </div>
-                <Coins size={18} className="text-slate-400" />
+                <Coins size={18} className="text-text-primary/30" />
               </div>
               <select 
                 value={settings.currency}
                 onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl outline-none border-2 border-transparent focus:border-indigo-500 transition-all font-bold text-slate-900 dark:text-white"
+                className="w-full px-4 py-3 bg-bg-main rounded-xl outline-none border-2 border-transparent focus:border-accent transition-all font-bold text-text-primary"
               >
                 <option value="GHS">GHS - Ghanaian Cedi</option>
                 <option value="USD">USD - US Dollar</option>
@@ -141,21 +142,27 @@ export const Settings: React.FC = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-bold text-slate-900 dark:text-white">Appearance</p>
-                <p className="text-xs text-slate-400">Light / Dark mode</p>
+                <p className="text-sm font-bold text-text-primary">Appearance</p>
+                <p className="text-xs text-text-primary/40">Light / Dark / Gold mode</p>
               </div>
-              <div className="flex bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl">
+              <div className="flex bg-bg-main p-1 rounded-xl">
                 <button 
                   onClick={() => setSettings({ ...settings, theme: 'light' })}
-                  className={cn("p-1.5 px-4 rounded-lg transition-all", settings.theme === 'light' ? "bg-white dark:bg-slate-700 text-amber-500 shadow-sm" : "text-slate-400")}
+                  className={cn("p-1.5 px-4 rounded-lg transition-all", settings.theme === 'light' ? "bg-card text-amber-500 shadow-sm" : "text-text-primary/40")}
                 >
                   <Sun size={16} />
                 </button>
                 <button 
                   onClick={() => setSettings({ ...settings, theme: 'dark' })}
-                  className={cn("p-1.5 px-4 rounded-lg transition-all", settings.theme === 'dark' ? "bg-white dark:bg-slate-700 text-indigo-400 shadow-sm" : "text-slate-400")}
+                  className={cn("p-1.5 px-4 rounded-lg transition-all", settings.theme === 'dark' ? "bg-card text-indigo-400 shadow-sm" : "text-text-primary/40")}
                 >
                   <Moon size={16} />
+                </button>
+                <button 
+                  onClick={() => setSettings({ ...settings, theme: 'gold' })}
+                  className={cn("p-1.5 px-4 rounded-lg transition-all", settings.theme === 'gold' ? "bg-card text-gold-accent shadow-sm" : "text-text-primary/40")}
+                >
+                  <Sparkles size={16} />
                 </button>
               </div>
             </div>
@@ -163,39 +170,39 @@ export const Settings: React.FC = () => {
         </div>
 
         {/* Data Management */}
-        <div className="bg-white rounded-[32px] border border-border-subtle shadow-sm overflow-hidden md:col-span-2">
-          <div className="p-6 border-b border-slate-50 bg-slate-50/50">
-            <h3 className="font-bold text-slate-900 flex items-center gap-2">
+        <div className="bg-card rounded-[32px] border border-border-subtle shadow-sm overflow-hidden md:col-span-2">
+          <div className="p-6 border-b border-border-subtle bg-bg-main/50">
+            <h3 className="font-bold text-text-primary flex items-center gap-2">
               <Database size={18} className="text-rose-600" /> Data & Security
             </h3>
           </div>
           <div className="p-6 space-y-6">
-            <div className="bg-rose-50 p-4 rounded-2xl flex gap-4">
-              <div className="shrink-0 w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600">
+            <div className="bg-rose-500/10 p-4 rounded-2xl flex gap-4">
+              <div className="shrink-0 w-10 h-10 bg-rose-500/10 rounded-xl flex items-center justify-center text-rose-500 border border-rose-500/20">
                 <ShieldAlert size={20} />
               </div>
               <div>
-                <p className="text-sm font-bold text-rose-900">Security Note</p>
-                <p className="text-xs text-rose-600 leading-relaxed">
-                  CediSafe runs entirely in your browser. Your data is stored locally and never leaves this device. 
-                  Regularly export your data to keep a backup.
+                <p className="text-sm font-bold text-rose-500">Security Note</p>
+                <p className="text-xs text-rose-500/70 leading-relaxed">
+                  Financial Safe is protected by Firebase Security Rules. Your data is isolated to your account 
+                  and encrypted in transit. Always log out when using a public terminal.
                 </p>
               </div>
             </div>
 
             <div className="pt-4">
                <motion.button 
-                  whileHover={{ scale: 1.01, backgroundColor: 'rgba(254, 226, 226, 0.5)', borderColor: 'rgba(254, 202, 202, 0.5)' }}
+                  whileHover={{ scale: 1.01, backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    if (confirm("Are you sure? This will permanently delete all your expenses, goals, and budget settings.")) {
+                    if (confirm("Are you sure? This will log you out and clear local session. Cloud data remains safe.")) {
                       resetData();
                     }
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-4 border-2 border-slate-100 dark:border-dark-border rounded-2xl text-sm font-bold text-slate-500 dark:text-slate-400 transition-colors font-display"
+                  className="w-full flex items-center justify-center gap-2 py-4 border-2 border-border-subtle rounded-2xl text-sm font-bold text-text-primary/50 transition-colors font-display"
                >
                  <Trash2 size={18} className="text-rose-500" /> 
-                 <span>Reset All Application Data</span>
+                 <span>Logout & Reset Session</span>
                </motion.button>
             </div>
           </div>
@@ -203,7 +210,10 @@ export const Settings: React.FC = () => {
       </div>
 
       <div className="text-center pt-10">
-        <p className="text-xs text-slate-300 font-bold uppercase tracking-widest">CediSafe v1.1.0 • Made for Ghana 🇬🇭</p>
+        <p className="text-xs text-text-primary/20 font-bold uppercase tracking-widest leading-loose">
+          FinancialSafe v1.2.0 • Premium FinTech Experience<br/>
+          Secure Cloud Sync Enabled • Made with ❤️
+        </p>
       </div>
     </div>
   );

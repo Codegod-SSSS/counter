@@ -22,7 +22,7 @@
         "amount": { "type": "number" },
         "categoryId": { "type": "string" },
         "date": { "type": "string" },
-        "notes": { "type": "string" },
+        "notes": { "type": "string", "description": "Optional notes, max 500 characters" },
         "paymentMethod": { "type": "string", "enum": ["Cash", "Mobile Money", "Bank"] }
       },
       "required": ["id", "amount", "categoryId", "date", "paymentMethod"]
