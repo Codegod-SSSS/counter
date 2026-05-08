@@ -52,7 +52,7 @@ export const Reports: React.FC = () => {
   return (
     <div className="space-y-8 pb-10">
       <div>
-        <h1 className="text-2xl font-display font-bold text-text-primary">Advanced Analytics</h1>
+        <h1 className="font-display font-bold text-[#56ea56] text-[26px]">Advanced Analytics</h1>
         <p className="text-text-primary/50">In-depth insights into your financial health.</p>
       </div>
 

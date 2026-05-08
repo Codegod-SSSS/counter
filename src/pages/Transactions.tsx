@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { formatCurrency, cn } from '../lib/utils';
 import { format, parseISO } from 'date-fns';
+import { motion, AnimatePresence } from 'motion/react';
 import { utils, writeFile } from 'xlsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -23,6 +24,8 @@ export const Transactions: React.FC = () => {
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [showExportMenu, setShowExportMenu] = useState(false);
+
+  const [isListOpen, setIsListOpen] = useState(true);
 
   const filteredExpenses = useMemo(() => {
     return expenses.filter(e => {
@@ -94,7 +97,7 @@ export const Transactions: React.FC = () => {
       {/* Header & Controls */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-2xl font-display font-bold text-text-primary">Transaction History</h1>
+          <h1 className="font-display font-bold text-[#56ea56] text-[26px]">Transaction History</h1>
           <p className="text-text-primary/50">Manage and analyze your spending logs.</p>
         </div>
         
@@ -156,79 +159,101 @@ export const Transactions: React.FC = () => {
       </div>
 
       {/* Transactions List */}
-      <div className="flex-1 bg-card rounded-[32px] border border-border-subtle shadow-sm overflow-hidden flex flex-col transition-colors duration-300">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-bg-main/50 text-[10px] uppercase tracking-widest font-black text-text-primary/40">
-              <tr>
-                <th className="px-8 py-5">Item</th>
-                <th className="px-8 py-5">Category</th>
-                <th className="px-8 py-5">Method</th>
-                <th className="px-8 py-5 text-right">Amount</th>
-                <th className="px-8 py-5 text-center"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-subtle">
-              {filteredExpenses.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="py-24 text-center text-text-primary/20">
-                    <p className="font-bold text-sm">No activity recorded.</p>
-                  </td>
-                </tr>
-              ) : (
-                filteredExpenses.map((expense) => {
-                  const category = categories.find(c => c.id === expense.categoryId);
-                  return (
-                    <tr key={expense.id} className="group hover:bg-bg-main/50 transition-colors">
-                      <td className="px-8 py-4">
-                        <div className="flex items-center gap-4">
-                          <div 
-                            className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
-                            style={{ backgroundColor: category?.color || 'var(--color-bg-main)' }}
-                          >
-                            <CategoryIcon name={category?.icon || 'Tags'} size={18} />
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-text-primary leading-tight">
-                              {expense.notes || 'Unlabeled Expense'}
-                            </p>
-                            <p className="text-[10px] text-text-primary/30 font-bold uppercase tracking-tight">
-                              {format(parseISO(expense.date), 'MMM dd, hh:mm a')}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-8 py-4">
-                        <span 
-                          className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
-                          style={{ backgroundColor: `${category?.color}20`, color: category?.color }}
-                        >
-                          {category?.name || 'Misc'}
-                        </span>
-                      </td>
-                      <td className="px-8 py-4">
-                        <span className="text-xs font-bold text-text-primary/50">{expense.paymentMethod}</span>
-                      </td>
-                      <td className="px-8 py-4 text-right">
-                        <span className="text-sm font-black text-text-primary">
-                          {formatCurrency(expense.amount, settings.currency)}
-                        </span>
-                      </td>
-                      <td className="px-8 py-4 text-center">
-                        <button 
-                          onClick={() => removeExpense(expense.id)}
-                          className="p-2 text-text-primary/10 hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </td>
+      <div className="flex-1 flex flex-col gap-2">
+        <button 
+          onClick={() => setIsListOpen(!isListOpen)}
+          className="w-full flex items-center justify-between p-4 bg-bg-main border border-border-subtle rounded-2xl hover:bg-bg-main/80 transition-all font-bold text-xs text-text-primary/40 uppercase tracking-widest"
+        >
+          <span className="flex items-center gap-2">
+            <TableIcon size={16} className="text-accent" />
+            Activity Log ({filteredExpenses.length})
+          </span>
+          <ChevronDown className={cn("transition-transform duration-300", !isListOpen && "-rotate-90")} size={16} />
+        </button>
+
+        <AnimatePresence>
+          {isListOpen && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="bg-card rounded-[32px] border border-border-subtle shadow-sm overflow-hidden flex flex-col transition-colors duration-300"
+            >
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-bg-main/50 text-[10px] uppercase tracking-widest font-black text-text-primary/40">
+                    <tr>
+                      <th className="px-8 py-5">Item</th>
+                      <th className="px-8 py-5">Category</th>
+                      <th className="px-8 py-5">Method</th>
+                      <th className="px-8 py-5 text-right">Amount</th>
+                      <th className="px-8 py-5 text-center"></th>
                     </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+                  </thead>
+                  <tbody className="divide-y divide-border-subtle">
+                    {filteredExpenses.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="py-24 text-center text-text-primary/20">
+                          <p className="font-bold text-sm">No activity recorded.</p>
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredExpenses.map((expense) => {
+                        const category = categories.find(c => c.id === expense.categoryId);
+                        return (
+                          <tr key={expense.id} className="group hover:bg-bg-main/50 transition-colors">
+                            <td className="px-8 py-4">
+                              <div className="flex items-center gap-4">
+                                <div 
+                                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
+                                  style={{ backgroundColor: category?.color || 'var(--color-bg-main)' }}
+                                >
+                                  <CategoryIcon name={category?.icon || 'Tags'} size={18} />
+                                </div>
+                                <div>
+                                  <p className="text-sm font-bold text-text-primary leading-tight">
+                                    {expense.notes || 'Unlabeled Expense'}
+                                  </p>
+                                  <p className="text-[10px] text-text-primary/30 font-bold uppercase tracking-tight">
+                                    {format(parseISO(expense.date), 'MMM dd, hh:mm a')}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-8 py-4">
+                              <span 
+                                className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
+                                style={{ backgroundColor: `${category?.color}20`, color: category?.color }}
+                              >
+                                {category?.name || 'Misc'}
+                              </span>
+                            </td>
+                            <td className="px-8 py-4">
+                              <span className="text-xs font-bold text-text-primary/50">{expense.paymentMethod}</span>
+                            </td>
+                            <td className="px-8 py-4 text-right">
+                              <span className="text-sm font-black text-text-primary">
+                                {formatCurrency(expense.amount, settings.currency)}
+                              </span>
+                            </td>
+                            <td className="px-8 py-4 text-center">
+                              <button 
+                                onClick={() => removeExpense(expense.id)}
+                                className="p-2 text-text-primary/10 hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

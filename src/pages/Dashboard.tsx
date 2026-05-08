@@ -70,7 +70,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       {/* Top Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-display font-bold text-text-primary">Welcome, {settings.userName || 'Member'}</h1>
+          <h1 className="font-display font-bold text-[#56ea56] text-[26px]">Welcome, {settings.userName || 'Member'}</h1>
           <p className="text-text-primary/50 text-sm">You have {formatCurrency(remaining, settings.currency)} left for the {settings.budgetType}.</p>
         </div>
         <button 

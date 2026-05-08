@@ -29,8 +29,8 @@ export const Onboarding: React.FC = () => {
 
   const steps = [
     {
-      title: "Welcome to Financial Safe",
-      description: "Modern expense tracking tailored for you. Choose your preferred budgeting style.",
+      title: "Get Started with Budgeting",
+      description: "Customize your tracking preferences to fit your financial habits.",
       icon: <Wallet className="text-accent" size={40} />,
       content: (
         <div className="space-y-4 text-left">

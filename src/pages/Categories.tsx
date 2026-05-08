@@ -76,7 +76,7 @@ export const Categories: React.FC = () => {
     <div className="space-y-8 pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-display font-bold text-text-primary tracking-tight">Categorization</h1>
+          <h1 className="font-display font-bold text-[#56ea56] text-[26px] tracking-tight">Categorization</h1>
           <p className="text-text-primary/50 text-sm">Define and organize your spending labels.</p>
         </div>
         <button 

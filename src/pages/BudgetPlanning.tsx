@@ -28,7 +28,7 @@ export const BudgetPlanning: React.FC = () => {
   return (
     <div className="space-y-8 pb-10">
       <div>
-        <h1 className="text-2xl font-display font-bold text-text-primary">Budget Allocation</h1>
+        <h1 className="font-display font-bold text-[#56ea56] text-[26px]">Budget Allocation</h1>
         <p className="text-text-primary/50">Plan your spending rhythm across different timeframes.</p>
       </div>
 

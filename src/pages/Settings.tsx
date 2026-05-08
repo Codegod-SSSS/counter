@@ -39,7 +39,7 @@ export const Settings: React.FC = () => {
   return (
     <div className="space-y-8 pb-10">
       <div>
-        <h1 className="text-2xl font-display font-bold text-text-primary">Application Settings</h1>
+        <h1 className="font-display font-bold text-[#56ea56] text-[26px]">Application Settings</h1>
         <p className="text-text-primary/50">Customize your experience and manage your financial data.</p>
       </div>
 
