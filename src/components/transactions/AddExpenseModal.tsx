@@ -55,7 +55,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onClos
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed inset-x-4 bottom-4 top-20 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[500px] bg-white rounded-3xl md:rounded-[2.5rem] shadow-2xl z-[101] overflow-hidden flex flex-col"
+            className="fixed inset-x-4 bottom-4 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[500px] md:max-h-[90vh] bg-white rounded-3xl md:rounded-[2.5rem] shadow-2xl z-[101] overflow-hidden flex flex-col"
           >
             {/* Header */}
             <div className="p-6 border-b border-slate-100 flex items-center justify-between shrink-0">

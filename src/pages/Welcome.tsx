@@ -82,6 +82,20 @@ export const Welcome: React.FC = () => {
     setSettings({ ...settings, currency: c });
   };
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        if (step === 1) {
+          handleNext();
+        } else {
+          handleEnter();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [step, settings]);
+
   return (
     <div className="min-h-screen bg-bg-main flex items-center justify-center p-4 overflow-hidden transition-colors duration-500 relative">
       {/* Dynamic Background Elements */}

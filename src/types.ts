@@ -41,4 +41,5 @@ export interface UserSettings {
   isAuthenticated?: boolean;
   userName?: string;
   email?: string;
+  photoURL?: string;
 }

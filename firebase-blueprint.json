@@ -49,10 +49,12 @@
         "budgetType": { "type": "string", "enum": ["daily", "weekly", "monthly", "yearly"] },
         "currency": { "type": "string" },
         "onboarded": { "type": "boolean" },
-        "theme": { "type": "string", "enum": ["light", "dark", "system"] },
+        "theme": { "type": "string", "enum": ["light", "dark", "gold", "system"] },
         "welcomed": { "type": "boolean" },
-        "userName": { "type": "string" },
-        "email": { "type": "string" }
+        "userName": { "type": "string", "maxLength": 256 },
+        "email": { "type": "string", "maxLength": 256 },
+        "photoURL": { "type": "string", "maxLength": 1024 },
+        "language": { "type": "string", "enum": ["en", "fr", "ko"] }
       }
     }
   },

@@ -14,7 +14,9 @@ import {
   Moon,
   Monitor,
   LogOut,
-  Sparkles
+  Sparkles,
+  Camera,
+  Check
 } from 'lucide-react';
 import { Page } from '../../AppContent';
 import { cn } from '../../lib/utils';
@@ -29,7 +31,22 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate }) => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+  const [isEditingProfile, setIsEditingProfile] = React.useState(false);
   const { settings, setSettings, resetData } = useBudget();
+
+  const [editName, setEditName] = React.useState(settings.userName || '');
+  const [editPhoto, setEditPhoto] = React.useState(settings.photoURL || '');
+
+  React.useEffect(() => {
+    setEditName(settings.userName || '');
+    setEditPhoto(settings.photoURL || '');
+  }, [settings.userName, settings.photoURL]);
+
+  const handleSaveProfile = async () => {
+    await setSettings({ ...settings, userName: editName, photoURL: editPhoto });
+    setIsEditingProfile(false);
+  };
 
   const toggleTheme = () => {
     const themes: ('light' | 'dark' | 'gold' | 'system')[] = ['light', 'dark', 'gold', 'system'];
@@ -155,15 +172,126 @@ export const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate
             </h2>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 relative">
             <div className="text-right hidden sm:block">
               <p className="text-sm font-bold text-text-primary leading-none">{settings.userName || 'Member Account'}</p>
               <p className="text-[10px] font-bold text-text-primary/40 uppercase tracking-widest mt-1">{settings.email || 'Free Tier'}</p>
             </div>
-            <div className="w-10 h-10 rounded-full bg-accent text-[var(--color-accent-contrast)] flex items-center justify-center font-black text-sm border-2 border-card shadow-sm">
-              {(settings.userName || 'G').charAt(0).toUpperCase()}
-              {(settings.userName || 'A').split(' ')[1]?.charAt(0).toUpperCase() || ''}
-            </div>
+            <button 
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              className="w-10 h-10 rounded-full bg-accent text-[var(--color-accent-contrast)] flex items-center justify-center font-black text-sm border-2 border-card shadow-sm overflow-hidden hover:scale-105 transition-transform"
+            >
+              {settings.photoURL ? (
+                <img src={settings.photoURL} alt="Profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              ) : (
+                <>
+                  {(settings.userName || 'G').charAt(0).toUpperCase()}
+                  {(settings.userName || 'A').split(' ')[1]?.charAt(0).toUpperCase() || ''}
+                </>
+              )}
+            </button>
+
+            {/* Profile Dropdown */}
+            <AnimatePresence>
+              {isProfileOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-10" 
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      setIsEditingProfile(false);
+                    }} 
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                    className="absolute right-0 top-full mt-2 w-72 bg-card border border-border-subtle rounded-2xl shadow-xl z-20 overflow-hidden"
+                  >
+                    <div className="p-6 text-center border-b border-border-subtle bg-bg-main/30">
+                      <div className="relative inline-block mb-3">
+                        <div className="w-20 h-20 mx-auto rounded-full bg-accent text-[var(--color-accent-contrast)] flex items-center justify-center font-black text-2xl border-4 border-card shadow-md overflow-hidden relative group">
+                          {settings.photoURL ? (
+                            <img src={settings.photoURL} alt="Profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          ) : (
+                            <>
+                              {(settings.userName || 'G').charAt(0).toUpperCase()}
+                            </>
+                          )}
+                          {isEditingProfile && (
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                              <Camera size={20} />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {isEditingProfile ? (
+                        <div className="space-y-3">
+                          <div className="space-y-1 text-left">
+                            <label className="text-[10px] font-bold text-text-primary/40 uppercase tracking-widest pl-1">Full Name</label>
+                            <input 
+                              type="text"
+                              value={editName}
+                              onChange={(e) => setEditName(e.target.value)}
+                              placeholder="Your name"
+                              className="w-full px-3 py-2 bg-bg-main border border-border-subtle rounded-xl text-sm font-bold focus:outline-none focus:border-accent transition-all"
+                            />
+                          </div>
+                          <div className="space-y-1 text-left">
+                            <label className="text-[10px] font-bold text-text-primary/40 uppercase tracking-widest pl-1">Photo URL</label>
+                            <input 
+                              type="text"
+                              value={editPhoto}
+                              onChange={(e) => setEditPhoto(e.target.value)}
+                              placeholder="https://..."
+                              className="w-full px-3 py-2 bg-bg-main border border-border-subtle rounded-xl text-sm font-bold focus:outline-none focus:border-accent transition-all"
+                            />
+                          </div>
+                          <button 
+                            onClick={handleSaveProfile}
+                            className="w-full bg-accent text-white py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-sm"
+                          >
+                            <Check size={16} /> Save Changes
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <h3 className="text-lg font-black text-text-primary truncate">{settings.userName || 'Member'}</h3>
+                          <p className="text-xs font-bold text-text-primary/40 truncate">{settings.email}</p>
+                          <button 
+                            onClick={() => setIsEditingProfile(true)}
+                            className="mt-4 w-full bg-bg-main border border-border-subtle text-text-primary/70 py-2 rounded-xl text-xs font-bold hover:text-text-primary hover:border-accent/30 transition-all"
+                          >
+                            Edit Profile
+                          </button>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="p-2 space-y-1">
+                      <button 
+                         onClick={() => {
+                           onNavigate('settings');
+                           setIsProfileOpen(false);
+                         }}
+                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-text-primary/60 hover:bg-bg-main hover:text-text-primary transition-all"
+                      >
+                        <SettingsIcon size={16} />
+                        Account Settings
+                      </button>
+                      <button 
+                         onClick={logout}
+                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-all"
+                      >
+                        <LogOut size={16} />
+                        Sign Out
+                      </button>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
         </header>
 

@@ -35,10 +35,12 @@ service cloud.firestore {
              data.budgetType in ['daily', 'weekly', 'monthly', 'yearly'] &&
              data.currency is string && data.currency.size() <= 10 &&
              data.onboarded is bool &&
-             data.theme in ['light', 'dark', 'system'] &&
+             data.theme in ['light', 'dark', 'gold', 'system'] &&
              data.welcomed is bool &&
-             (!('userName' in data) || (data.userName is string && data.userName.size() <= 100)) &&
-             (!('email' in data) || (data.email is string && data.email.size() <= 100));
+             (!('userName' in data) || (data.userName is string && data.userName.size() <= 256)) &&
+             (!('email' in data) || (data.email is string && data.email.size() <= 256)) &&
+             (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1024)) &&
+             (!('language' in data) || (data.language in ['en', 'fr', 'ko']));
     }
 
     function isValidCategory(data) {

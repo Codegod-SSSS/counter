@@ -96,6 +96,20 @@ export const Onboarding: React.FC = () => {
 
   const currentStep = steps[step - 1];
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        if (step === steps.length) {
+          if (budget) handleComplete();
+        } else {
+          setStep(step + 1);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [step, budget]);
+
   return (
     <div className="min-h-screen bg-bg-main flex items-center justify-center p-6">
       <motion.div

@@ -10,9 +10,11 @@ import { Reports } from './pages/Reports';
 import { Goals } from './pages/Goals';
 import { Settings } from './pages/Settings';
 import { AnimatePresence, motion } from 'motion/react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { Login } from './pages/Login';
 import { Welcome } from './pages/Welcome';
+import { Terms } from './pages/Terms';
 
 export type Page = 'dashboard' | 'transactions' | 'categories' | 'budget' | 'reports' | 'goals' | 'settings';
 
@@ -31,45 +33,46 @@ export default function App() {
     );
   }
 
-  if (!settings.welcomed) {
-    return <Welcome />;
-  }
-
-  if (!settings.isAuthenticated) {
-    return <Login />;
-  }
-
-  if (!settings.onboarded) {
-    return <Onboarding />;
-  }
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'dashboard': return <Dashboard onNavigate={setCurrentPage} />;
-      case 'transactions': return <Transactions />;
-      case 'categories': return <Categories />;
-      case 'budget': return <BudgetPlanning />;
-      case 'reports': return <Reports />;
-      case 'goals': return <Goals />;
-      case 'settings': return <Settings />;
-      default: return <Dashboard onNavigate={setCurrentPage} />;
-    }
-  };
-
   return (
-    <Layout activePage={currentPage} onNavigate={setCurrentPage}>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentPage}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-          className="h-full"
-        >
-          {renderPage()}
-        </motion.div>
-      </AnimatePresence>
-    </Layout>
+    <Routes>
+      <Route path="/terms" element={<Terms />} />
+      <Route path="*" element={
+        <>
+          {!settings.welcomed ? (
+            <Welcome />
+          ) : !settings.isAuthenticated ? (
+            <Login />
+          ) : !settings.onboarded ? (
+            <Onboarding />
+          ) : (
+            <Layout activePage={currentPage} onNavigate={setCurrentPage}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentPage}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="h-full"
+                >
+                  {(() => {
+                    switch (currentPage) {
+                      case 'dashboard': return <Dashboard onNavigate={setCurrentPage} />;
+                      case 'transactions': return <Transactions />;
+                      case 'categories': return <Categories />;
+                      case 'budget': return <BudgetPlanning />;
+                      case 'reports': return <Reports />;
+                      case 'goals': return <Goals />;
+                      case 'settings': return <Settings />;
+                      default: return <Dashboard onNavigate={setCurrentPage} />;
+                    }
+                  })()}
+                </motion.div>
+              </AnimatePresence>
+            </Layout>
+          )}
+        </>
+      } />
+    </Routes>
   );
 }

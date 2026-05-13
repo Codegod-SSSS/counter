@@ -9,13 +9,14 @@ import {
   MoreVertical,
   Trash2,
   FileText,
-  Table as TableIcon
+  Table as TableIcon,
+  History as HistoryIcon
 } from 'lucide-react';
 import { formatCurrency, cn } from '../lib/utils';
 import { format, parseISO } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
 import { utils, writeFile } from 'xlsx';
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { CategoryIcon } from './Categories';
 
@@ -120,7 +121,7 @@ export const Transactions: React.FC = () => {
                   <FileText size={16} /> PDF Report
                 </button>
                 <button onClick={exportToCSV} className="w-full text-left px-4 py-2 text-sm font-medium text-text-primary/70 hover:bg-accent/10 hover:text-accent flex items-center gap-2 transition-colors">
-                  <History size={16} /> CSV File
+                  <HistoryIcon size={16} /> CSV File
                 </button>
               </div>
             )}
