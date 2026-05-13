@@ -101,7 +101,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activePage, onNavigate
             <CreditCard size={18} />
           </div>
           <div>
-            <h1 className="font-display font-black text-xl leading-none text-text-primary tracking-tight">CediSafe</h1>
+            <h1 className="font-display font-black text-xl leading-none text-text-primary tracking-tight">MONEYTORY</h1>
           </div>
         </div>
 

@@ -19,7 +19,7 @@ import { BudgetType } from '../types';
 import { motion } from 'motion/react';
 
 export const Settings: React.FC = () => {
-  const { settings, setSettings, resetData } = useBudget();
+  const { settings, setSettings, resetData, clearAllData } = useBudget();
 
   const handleBudgetTypeChange = (type: BudgetType) => {
     setSettings({ ...settings, budgetType: type });
@@ -184,13 +184,13 @@ export const Settings: React.FC = () => {
               <div>
                 <p className="text-sm font-bold text-rose-500">Security Note</p>
                 <p className="text-xs text-rose-500/70 leading-relaxed">
-                  Financial Safe is protected by Firebase Security Rules. Your data is isolated to your account 
+                  MONEYTORY is protected by Firebase Security Rules. Your data is isolated to your account 
                   and encrypted in transit. Always log out when using a public terminal.
                 </p>
               </div>
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 space-y-3">
                <motion.button 
                   whileHover={{ scale: 1.01, backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
                   whileTap={{ scale: 0.98 }}
@@ -204,6 +204,20 @@ export const Settings: React.FC = () => {
                  <Trash2 size={18} className="text-rose-500" /> 
                  <span>Logout & Reset Session</span>
                </motion.button>
+
+               <motion.button 
+                  whileHover={{ scale: 1.01, backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    if (confirm("Are you sure you want to clear all data? This will permanently delete all your expenses and goals. This action cannot be undone.")) {
+                      clearAllData();
+                    }
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-4 border-2 border-rose-500/20 rounded-2xl text-sm font-bold text-rose-500 transition-colors font-display bg-rose-500/5"
+               >
+                 <History size={18} /> 
+                 <span>Reset All Data</span>
+               </motion.button>
             </div>
           </div>
         </div>
@@ -211,7 +225,7 @@ export const Settings: React.FC = () => {
 
       <div className="text-center pt-10">
         <p className="text-xs text-text-primary/20 font-bold uppercase tracking-widest leading-loose">
-          FinancialSafe v1.2.0 • Premium FinTech Experience<br/>
+          MONEYTORY v1.2.0 • Premium FinTech Experience<br/>
           Secure Cloud Sync Enabled • Made with ❤️
         </p>
       </div>

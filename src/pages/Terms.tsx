@@ -53,7 +53,7 @@ export const Terms: React.FC = () => {
             </div>
             <h3 className="text-lg font-bold text-text-primary">Financial Tracking</h3>
             <p className="text-sm text-text-primary/60 leading-relaxed">
-              FinancialSafe is a tracking tool for personal use. It is not a financial advisor or a banking service.
+              MONEYTORY is a tracking tool for personal use. It is not a financial advisor or a banking service.
             </p>
           </div>
         </div>
@@ -64,7 +64,7 @@ export const Terms: React.FC = () => {
               <CheckCircle2 size={18} className="text-accent" /> 1. Acceptance of Terms
             </h2>
             <p>
-              By accessing and using FinancialSafe, you agree to follow and be bound by these terms. If you do not agree to these terms, please do not use the application.
+              By accessing and using MONEYTORY, you agree to follow and be bound by these terms. If you do not agree to these terms, please do not use the application.
             </p>
           </section>
 
@@ -89,7 +89,7 @@ export const Terms: React.FC = () => {
 
         <div className="pt-10 border-t border-border-subtle flex flex-col sm:flex-row justify-between items-center gap-6">
           <p className="text-xs text-text-primary/40 font-bold uppercase tracking-widest">
-            © 2026 FinancialSafe Project
+            © 2026 MONEYTORY Project
           </p>
           <button 
             onClick={() => navigate('/login')}

@@ -56,7 +56,7 @@ export const Transactions: React.FC = () => {
 
   const exportToPDF = () => {
     const doc = new jsPDF();
-    doc.text("Financial Safe Transaction Report", 14, 15);
+    doc.text("MONEYTORY Transaction Report", 14, 15);
     const tableData = filteredExpenses.map(e => [
       format(parseISO(e.date), 'dd/MM/yyyy'),
       categories.find(c => c.id === e.categoryId)?.name || 'Unknown',

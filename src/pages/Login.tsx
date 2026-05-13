@@ -63,7 +63,7 @@ export const Login: React.FC = () => {
             <div className="w-16 h-16 bg-accent rounded-3xl flex items-center justify-center text-white mx-auto shadow-xl shadow-accent/20 mb-6">
               <CreditCard size={32} />
             </div>
-            <h1 className="text-3xl font-display font-black text-text-primary tracking-tight">Financial Safe Login</h1>
+            <h1 className="text-3xl font-display font-black text-text-primary tracking-tight">MONEYTORY Login</h1>
             <p className="text-text-primary/50 text-sm">Secure access to your personal tracking.</p>
           </div>
 

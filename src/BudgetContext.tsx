@@ -12,7 +12,8 @@ import {
   updateDoc, 
   query, 
   orderBy,
-  getDocFromServer
+  getDocFromServer,
+  getDocs
 } from 'firebase/firestore';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { handleFirestoreError, OperationType } from './lib/firestore-error';
@@ -31,6 +32,7 @@ interface BudgetContextType {
   addGoal: (goal: Omit<SavingsGoal, 'id'>) => Promise<void>;
   updateGoal: (goal: SavingsGoal) => Promise<void>;
   resetData: () => Promise<void>;
+  clearAllData: () => Promise<void>;
   loading: boolean;
   currentUser: User | null;
 }
@@ -167,8 +169,9 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (!currentUser) return;
     const path = `users/${currentUser.uid}/expenses`;
     try {
-      const docRef = await addDoc(collection(db, path), expense);
-      await updateDoc(docRef, { id: docRef.id });
+      const docRef = doc(collection(db, path));
+      const id = docRef.id;
+      await setDoc(docRef, { ...expense, id });
     } catch (err) {
       handleFirestoreError(err, OperationType.CREATE, path);
     }
@@ -198,8 +201,9 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (!currentUser) return;
     const path = `users/${currentUser.uid}/categories`;
     try {
-      const docRef = await addDoc(collection(db, path), category);
-      await updateDoc(docRef, { id: docRef.id });
+      const docRef = doc(collection(db, path));
+      const id = docRef.id;
+      await setDoc(docRef, { ...category, id });
     } catch (err) {
       handleFirestoreError(err, OperationType.CREATE, path);
     }
@@ -219,8 +223,9 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (!currentUser) return;
     const path = `users/${currentUser.uid}/goals`;
     try {
-      const docRef = await addDoc(collection(db, path), goal);
-      await updateDoc(docRef, { id: docRef.id });
+      const docRef = doc(collection(db, path));
+      const id = docRef.id;
+      await setDoc(docRef, { ...goal, id });
     } catch (err) {
       handleFirestoreError(err, OperationType.CREATE, path);
     }
@@ -243,11 +248,26 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     window.location.reload();
   };
 
+  const clearAllData = async () => {
+    if (!currentUser) return;
+    const expensePath = `users/${currentUser.uid}/expenses`;
+    const goalsPath = `users/${currentUser.uid}/goals`;
+    try {
+      const expensesSnap = await getDocs(collection(db, expensePath));
+      await Promise.all(expensesSnap.docs.map(d => deleteDoc(d.ref)));
+      
+      const goalsSnap = await getDocs(collection(db, goalsPath));
+      await Promise.all(goalsSnap.docs.map(d => deleteDoc(d.ref)));
+    } catch (err) {
+      handleFirestoreError(err, OperationType.DELETE, "multiple_collections");
+    }
+  };
+
   return (
     <BudgetContext.Provider value={{
       settings, expenses, categories, goals, loading, currentUser,
       setSettings, addExpense, removeExpense, updateExpense,
-      addCategory, removeCategory, addGoal, updateGoal, resetData
+      addCategory, removeCategory, addGoal, updateGoal, resetData, clearAllData
     }}>
       {children}
     </BudgetContext.Provider>

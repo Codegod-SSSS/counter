@@ -6,7 +6,7 @@ import { useBudget } from '../BudgetContext';
 const TRANSLATIONS = {
   en: {
     name: 'English',
-    title: 'Welcome to Financial Safe',
+    title: 'Welcome to MONEYTORY',
     subtitle: 'Secure, localized, and intelligent expense tracking built for everyone.',
     secure: 'Secure Storage',
     firebase: 'Firebase Ready',
@@ -157,7 +157,7 @@ export const Welcome: React.FC = () => {
             <div className="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center text-[var(--color-accent-contrast)] shadow-lg shadow-accent/20">
               <CreditCard size={28} />
             </div>
-            <h1 className="text-2xl font-display font-black text-text-primary tracking-tight">FinancialSafe</h1>
+            <h1 className="text-2xl font-display font-black text-text-primary tracking-tight">MONEYTORY</h1>
           </motion.div>
 
           <AnimatePresence mode="wait">
